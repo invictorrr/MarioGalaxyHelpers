@@ -1,0 +1,18 @@
+{
+  "entity.mariogalaxyhelpers.toad": "Toad",
+  "entity.mariogalaxyhelpers.yoshi_placeholder": "Yoshi",
+  "entity.mariogalaxyhelpers.luigi": "Luigi",
+  "entity.mariogalaxyhelpers.captain_toad": "Capitan Toad",
+  "entity.mariogalaxyhelpers.rosalina": "Estela",
+  "entity.mariogalaxyhelpers.luma": "Destello",
+  "entity.mariogalaxyhelpers.peach": "Peach",
+  "entity.mariogalaxyhelpers.bowser_jr": "Bowsy",
+  "item.mariogalaxyhelpers.toad_spawn_egg": "Generar Toad",
+  "item.mariogalaxyhelpers.yoshi_placeholder_spawn_egg": "Generar Yoshi",
+  "item.mariogalaxyhelpers.luigi_spawn_egg": "Generar Luigi",
+  "item.mariogalaxyhelpers.captain_toad_spawn_egg": "Generar Capitan Toad",
+  "item.mariogalaxyhelpers.rosalina_spawn_egg": "Generar Estela",
+  "item.mariogalaxyhelpers.luma_spawn_egg": "Generar Destello",
+  "item.mariogalaxyhelpers.peach_spawn_egg": "Generar Peach",
+  "item.mariogalaxyhelpers.bowser_jr_spawn_egg": "Generar Bowsy"
+}
