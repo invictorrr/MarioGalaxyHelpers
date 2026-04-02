@@ -37,3 +37,10 @@ authors="${mod_authors}"
     versionRange="[0.0.8,)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="mario_power_ups"
+    mandatory=false
+    versionRange="[1.0,)"
+    ordering="NONE"
+    side="BOTH"

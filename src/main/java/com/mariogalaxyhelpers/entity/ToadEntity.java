@@ -11,6 +11,7 @@ import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -156,8 +157,15 @@ public class ToadEntity extends NPCEntity {
                         0,
                         0);
 
-        target.kill();
-        owner.getInventory().add(food);
+        target.discard();
+        ItemEntity itemEntity =
+                new ItemEntity(
+                        this.level(),
+                        target.getX(),
+                        target.getY() + 0.5,
+                        target.getZ(),
+                        food);
+        this.level().addFreshEntity(itemEntity);
 
         this.level()
                 .playSound(

@@ -1,0 +1,23 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_power_star": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "super_block_world:power_star"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_power_star"]
+  ],
+  "rewards": {
+    "recipes": [
+      "mariogalaxyhelpers:craft_super_gem"
+    ]
+  }
+}

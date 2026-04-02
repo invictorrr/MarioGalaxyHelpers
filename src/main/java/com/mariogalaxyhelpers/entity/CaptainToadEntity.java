@@ -2,16 +2,20 @@ package com.mariogalaxyhelpers.entity;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
 
 public class CaptainToadEntity extends NPCEntity {
+
+    private boolean tracking;
+    private BlockPos targetPos;
+    private int particleTimer;
 
     public CaptainToadEntity(EntityType<? extends NPCEntity> type, Level level) {
         super(type, level);
@@ -30,7 +34,7 @@ public class CaptainToadEntity extends NPCEntity {
 
     @Override
     public int getAbilityCooldown() {
-        return 1200;
+        return 0;
     }
 
     @Override
@@ -40,6 +44,18 @@ public class CaptainToadEntity extends NPCEntity {
 
     @Override
     public void performAbility(Player owner) {
+        if (tracking) {
+            // Click para parar
+            tracking = false;
+            targetPos = null;
+            owner.displayClientMessage(
+                    Component.literal("Captain Toad: \u00a1Deja de rastrear!")
+                            .withStyle(ChatFormatting.GRAY),
+                    false);
+            return;
+        }
+
+        // Click para buscar nueva estructura
         if (!(this.level() instanceof ServerLevel serverLevel)) {
             return;
         }
@@ -54,27 +70,53 @@ public class CaptainToadEntity extends NPCEntity {
             return;
         }
 
-        Vec3 start = this.position().add(0, 1, 0);
-        Vec3 end = Vec3.atCenterOf(dest);
+        targetPos = dest;
+        tracking = true;
+        particleTimer = 0;
+
+        owner.displayClientMessage(
+                Component.literal("Captain Toad: \u00a1Por all\u00ed hay una aldea! \u00a1S\u00edgueme!")
+                        .withStyle(ChatFormatting.GOLD),
+                false);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (!this.level().isClientSide && isHired() && tracking && targetPos != null) {
+            particleTimer--;
+            if (particleTimer <= 0) {
+                particleTimer = 5;
+                showTrailParticles();
+            }
+        }
+    }
+
+    private void showTrailParticles() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        Vec3 start = this.position().add(0, 1.5, 0);
+        Vec3 end = Vec3.atCenterOf(targetPos);
         Vec3 dir = end.subtract(start).normalize();
 
-        for (int i = 0; i < 32; i++) {
+        double maxDist = Math.min(start.distanceTo(end), 40);
+        int steps = (int) (maxDist / 0.75);
+
+        for (int i = 0; i < steps; i++) {
             Vec3 p = start.add(dir.scale(i * 0.75));
             serverLevel.sendParticles(
                     ParticleTypes.END_ROD,
                     p.x,
                     p.y,
                     p.z,
-                    2,
-                    0.05,
-                    0.05,
-                    0.05,
-                    0.01);
+                    1,
+                    0.02,
+                    0.02,
+                    0.02,
+                    0.005);
         }
-
-        owner.displayClientMessage(
-                Component.literal("Captain Toad: \u00a1Por all\u00ed hay una aldea!")
-                        .withStyle(ChatFormatting.GOLD),
-                false);
     }
 }

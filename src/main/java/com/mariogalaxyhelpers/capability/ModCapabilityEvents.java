@@ -26,6 +26,8 @@ public final class ModCapabilityEvents {
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
+        // Caps on the original are invalidated after dimension change/death — revive them first
+        event.getOriginal().reviveCaps();
         event.getOriginal()
                 .getCapability(ModCapabilities.PLAYER_DATA)
                 .ifPresent(
@@ -36,12 +38,27 @@ public final class ModCapabilityEvents {
                                                 newData ->
                                                         newData.deserializeNBT(
                                                                 oldData.serializeNBT())));
+        event.getOriginal().invalidateCaps();
     }
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer) {
             ModMessages.sendPlayerData(event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer) {
+            ModCapabilities.syncToClient(event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer) {
+            ModCapabilities.syncToClient(event.getEntity());
         }
     }
 }

@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_star_bit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "super_block_world:star_bits"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_star_bit"]
+  ],
+  "rewards": {
+    "recipes": [
+      "mariogalaxyhelpers:craft_power_star_yellow",
+      "mariogalaxyhelpers:craft_power_star_red",
+      "mariogalaxyhelpers:craft_power_star_blue",
+      "mariogalaxyhelpers:craft_power_star_purple",
+      "mariogalaxyhelpers:craft_power_star_rainbow"
+    ]
+  }
+}
